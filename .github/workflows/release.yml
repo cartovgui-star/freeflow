@@ -30,7 +30,7 @@ jobs:
           .\packaging\build.ps1 -Version $version
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: FreeFlow-Windows-${{ github.ref_name }}
           path: |
