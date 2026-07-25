@@ -21,9 +21,16 @@ from pathlib import Path
 from typing import Any, Callable
 
 
-APP_DIR = Path(__file__).resolve().parent
-SETTINGS_PATH = APP_DIR / "settings.json"
-LOG_PATH = APP_DIR / "freeflow.log"
+IS_FROZEN = bool(getattr(sys, "frozen", False))
+APP_DIR = Path(sys.executable).resolve().parent if IS_FROZEN else Path(__file__).resolve().parent
+DATA_DIR = (
+    Path(os.environ.get("LOCALAPPDATA", APP_DIR)) / "FreeFlow"
+    if IS_FROZEN
+    else APP_DIR
+)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+SETTINGS_PATH = DATA_DIR / "settings.json"
+LOG_PATH = DATA_DIR / "freeflow.log"
 VERSION = "1.0.0"
 
 # pythonw.exe has no console. Keep diagnostics available in freeflow.log.
