@@ -1,5 +1,5 @@
 """
-FreeFlow — private, local-first Windows dictation.
+FreeFlow — private, on-device Windows dictation.
 
 Hold the configured global shortcut, speak, and release. Audio is transcribed
 locally with faster-whisper, optionally polished by Ollama, then pasted into the
@@ -1407,7 +1407,7 @@ def smoke_test() -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Private, local-first Windows dictation")
+    parser = argparse.ArgumentParser(description="Private, on-device Windows dictation")
     parser.add_argument("--version", action="version", version=f"FreeFlow {VERSION}")
     parser.add_argument("--demo", action="store_true", help="Open the UI with sample data and no audio/model")
     parser.add_argument(
