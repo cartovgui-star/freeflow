@@ -1,7 +1,8 @@
 param(
     [switch]$StartWithWindows,
     [switch]$NoDesktopShortcut,
-    [switch]$NoLaunch
+    [switch]$NoLaunch,
+    [switch]$CpuOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,7 +11,7 @@ $VenvPython = Join-Path $ProjectDir ".venv\Scripts\python.exe"
 $Launcher = Join-Path $ProjectDir "run_silent.vbs"
 
 Write-Host ""
-Write-Host "  Whisperflow setup" -ForegroundColor Magenta
+Write-Host "  FreeFlow setup" -ForegroundColor Magenta
 Write-Host "  Private, local-first dictation for Windows" -ForegroundColor DarkGray
 Write-Host ""
 
@@ -32,15 +33,32 @@ if (-not (Test-Path -LiteralPath $VenvPython)) {
 
 Write-Host "[2/4] Installing speech and audio components..."
 & $VenvPython -m pip install --upgrade pip
-& $VenvPython -m pip install -r (Join-Path $ProjectDir "requirements.txt")
+$HasNvidiaGpu = $false
+if (-not $CpuOnly) {
+    try {
+        $HasNvidiaGpu = [bool](Get-CimInstance Win32_VideoController |
+            Where-Object { $_.Name -match "NVIDIA" } |
+            Select-Object -First 1)
+    } catch {
+        $HasNvidiaGpu = $false
+    }
+}
+if ($HasNvidiaGpu) {
+    Write-Host "      NVIDIA GPU detected; enabling CUDA acceleration." -ForegroundColor DarkGray
+    $RequirementsFile = Join-Path $ProjectDir "requirements-gpu.txt"
+} else {
+    Write-Host "      Installing CPU-compatible dependencies." -ForegroundColor DarkGray
+    $RequirementsFile = Join-Path $ProjectDir "requirements.txt"
+}
+& $VenvPython -m pip install -r $RequirementsFile
 
 Write-Host "[3/4] Checking the installation..."
-& $VenvPython (Join-Path $ProjectDir "whisperflow.py") --smoke-test
+& $VenvPython (Join-Path $ProjectDir "freeflow.py") --smoke-test
 
 Write-Host "[4/4] Creating shortcuts..."
 $Shell = New-Object -ComObject WScript.Shell
 if (-not $NoDesktopShortcut) {
-    $DesktopShortcut = $Shell.CreateShortcut((Join-Path ([Environment]::GetFolderPath("Desktop")) "Whisperflow.lnk"))
+    $DesktopShortcut = $Shell.CreateShortcut((Join-Path ([Environment]::GetFolderPath("Desktop")) "FreeFlow.lnk"))
     $DesktopShortcut.TargetPath = "$env:WINDIR\System32\wscript.exe"
     $DesktopShortcut.Arguments = "`"$Launcher`""
     $DesktopShortcut.WorkingDirectory = $ProjectDir
@@ -49,16 +67,16 @@ if (-not $NoDesktopShortcut) {
 }
 if ($StartWithWindows) {
     $StartupDir = [Environment]::GetFolderPath("Startup")
-    $StartupShortcut = $Shell.CreateShortcut((Join-Path $StartupDir "Whisperflow.lnk"))
+    $StartupShortcut = $Shell.CreateShortcut((Join-Path $StartupDir "FreeFlow.lnk"))
     $StartupShortcut.TargetPath = "$env:WINDIR\System32\wscript.exe"
     $StartupShortcut.Arguments = "`"$Launcher`""
     $StartupShortcut.WorkingDirectory = $ProjectDir
-    $StartupShortcut.Description = "Start Whisperflow with Windows"
+    $StartupShortcut.Description = "Start FreeFlow with Windows"
     $StartupShortcut.Save()
 }
 
 Write-Host ""
-Write-Host "Whisperflow is ready." -ForegroundColor Green
+Write-Host "FreeFlow is ready." -ForegroundColor Green
 Write-Host "The first launch may download the selected Whisper model." -ForegroundColor DarkGray
 
 if (-not $NoLaunch) {

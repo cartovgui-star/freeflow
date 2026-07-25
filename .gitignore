@@ -10,3 +10,9 @@ err.log
 dist/
 build/
 *.spec
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+.coverage

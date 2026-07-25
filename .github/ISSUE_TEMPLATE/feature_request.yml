@@ -1,0 +1,33 @@
+name: Feature request
+description: Suggest an improvement to FreeFlow.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What workflow or limitation should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed experience
+      description: Describe how the feature should work from a user's perspective.
+    validations:
+      required: true
+  - type: dropdown
+    id: privacy
+    attributes:
+      label: Does this change affect audio, transcripts, or clipboard data?
+      options:
+        - "No"
+        - "Yes"
+        - "Unsure"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

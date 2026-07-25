@@ -1,5 +1,5 @@
 """
-Whisperflow — private, local-first Windows dictation.
+FreeFlow — private, local-first Windows dictation.
 
 Hold the configured global shortcut, speak, and release. Audio is transcribed
 locally with faster-whisper, optionally polished by Ollama, then pasted into the
@@ -23,9 +23,10 @@ from typing import Any, Callable
 
 APP_DIR = Path(__file__).resolve().parent
 SETTINGS_PATH = APP_DIR / "settings.json"
-LOG_PATH = APP_DIR / "whisperflow.log"
+LOG_PATH = APP_DIR / "freeflow.log"
+VERSION = "1.0.0"
 
-# pythonw.exe has no console. Keep diagnostics available in whisperflow.log.
+# pythonw.exe has no console. Keep diagnostics available in freeflow.log.
 if sys.stdout is None or sys.stderr is None:
     _log_file = LOG_PATH.open("a", buffering=1, encoding="utf-8")
     sys.stdout = _log_file
@@ -566,7 +567,7 @@ def flat_button(
     )
 
 
-class WhisperflowApp:
+class FreeFlowApp:
     def __init__(self, root: tk.Tk, demo: bool = False, initial_page: str = "dictate"):
         self.root = root
         self.demo = demo
@@ -597,7 +598,7 @@ class WhisperflowApp:
             self.root.after(350, self.root.iconify)
 
     def _configure_window(self) -> None:
-        self.root.title("Whisperflow")
+        self.root.title("FreeFlow")
         self.root.geometry("1120x740")
         self.root.minsize(940, 650)
         self.root.configure(bg=BG)
@@ -642,7 +643,7 @@ class WhisperflowApp:
             logo.create_line(x, 19 - height / 2, x, 19 + height / 2, fill="white", width=3, capstyle="round")
         tk.Label(
             brand,
-            text="whisperflow",
+            text="freeflow",
             bg=SIDEBAR,
             fg=TEXT,
             font=("Segoe UI Semibold", 15),
@@ -990,7 +991,7 @@ class WhisperflowApp:
         ai = tk.Frame(holder, bg=PANEL, highlightthickness=1, highlightbackground=BORDER)
         ai.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
 
-        self._section_title(general, "Input & shortcut", "Choose how Whisperflow listens.")
+        self._section_title(general, "Input & shortcut", "Choose how FreeFlow listens.")
         self.hotkey_var = tk.StringVar(value=self.settings["hotkey"])
         self._field_label(general, "Hold-to-talk shortcut")
         hotkey_box = ttk.Combobox(
@@ -1400,6 +1401,7 @@ def smoke_test() -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Private, local-first Windows dictation")
+    parser.add_argument("--version", action="version", version=f"FreeFlow {VERSION}")
     parser.add_argument("--demo", action="store_true", help="Open the UI with sample data and no audio/model")
     parser.add_argument(
         "--page",
@@ -1418,7 +1420,7 @@ def main() -> int:
     except Exception:
         pass
     root = tk.Tk()
-    WhisperflowApp(root, demo=args.demo, initial_page=args.page)
+    FreeFlowApp(root, demo=args.demo, initial_page=args.page)
     root.mainloop()
     return 0
 

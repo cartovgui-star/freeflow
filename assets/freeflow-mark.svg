@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">FreeFlow mark</title>
+  <desc id="desc">A violet circle containing five white audio bars.</desc>
+  <defs>
+    <linearGradient id="bg" x1="18" y1="16" x2="110" y2="114" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A174FF"/>
+      <stop offset="1" stop-color="#6D3EE8"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#6D3EE8" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <circle cx="64" cy="64" r="52" fill="url(#bg)" filter="url(#shadow)"/>
+  <g fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round">
+    <path d="M38 57v14"/>
+    <path d="M51 45v38"/>
+    <path d="M64 36v56"/>
+    <path d="M77 47v34"/>
+    <path d="M90 55v18"/>
+  </g>
+</svg>
