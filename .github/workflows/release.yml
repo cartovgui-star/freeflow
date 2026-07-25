@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows-installer:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = $env:GITHUB_REF_NAME.TrimStart("v")
+          .\packaging\build.ps1 -Version $version
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FreeFlow-Windows-${{ github.ref_name }}
+          path: |
+            dist/installer/*.exe
+            dist/installer/*.sha256
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME `
+            .\dist\installer\*.exe `
+            .\dist\installer\*.sha256 `
+            --verify-tag `
+            --title "FreeFlow $env:GITHUB_REF_NAME" `
+            --generate-notes `
+            --notes "Download the x64 Windows installer below. This build is unsigned; verify it with the attached SHA-256 checksum if Windows SmartScreen displays a warning."

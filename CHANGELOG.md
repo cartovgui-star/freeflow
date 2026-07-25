@@ -11,6 +11,9 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Self-contained per-user Windows installer with Start menu, desktop, and
+  start-with-Windows options
+- Reproducible PyInstaller/Inno Setup release build and SHA-256 checksum
 - Native Windows dashboard with live waveform and recording state
 - Global hold-to-talk dictation and automatic paste
 - Local faster-whisper transcription with GPU/CPU fallback

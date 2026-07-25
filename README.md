@@ -23,12 +23,30 @@
 ## Requirements
 
 - Windows 10 or Windows 11
-- Python 3.11 or newer
 - A working microphone
 - Optional: [Ollama](https://ollama.com/) for transcript cleanup
-- Optional: an NVIDIA GPU for faster transcription
+- Python 3.11 or newer only when installing from source
+- Optional: an NVIDIA GPU when installing from source
 
 ## Install
+
+### Windows installer (recommended)
+
+1. Open the [latest release](https://github.com/cartovgui-star/freeflow/releases/latest).
+2. Download **`FreeFlow-Setup-1.0.0-x64.exe`**.
+3. Run the installer, then open **FreeFlow** from the Start menu.
+
+The installer is self-contained: Python is not required. It installs only for
+the current Windows user, so administrator access is not needed. The packaged
+build favors CPU compatibility; advanced users who want bundled NVIDIA
+dependencies should use the source installation below.
+
+> [!IMPORTANT]
+> The installer is not code-signed yet, so Windows SmartScreen may display an
+> "unrecognized app" warning. Verify the download against the `.sha256` file
+> attached to the same GitHub release.
+
+### Install from source
 
 1. Download or clone this repository.
 2. Double-click **`setup.bat`**.
@@ -72,7 +90,8 @@ release to copy the result. This avoids pasting back into FreeFlow itself.
 - Clipboard restoration
 - Minimized startup
 
-Settings are stored locally in `settings.json`, which is excluded from Git.
+Source installations store settings in the repository's local `settings.json`.
+Packaged installations store them in `%LOCALAPPDATA%\FreeFlow\settings.json`.
 
 ## Ollama cleanup
 
@@ -117,6 +136,15 @@ Validation and UI preview:
 .\.venv\Scripts\python freeflow.py --demo
 ```
 
+Build the self-contained Windows installer:
+
+```powershell
+winget install --id JRSoftware.InnoSetup -e
+.\packaging\build.ps1
+```
+
+The installer and its SHA-256 checksum are written to `dist\installer`.
+
 ## Project layout
 
 ```text
@@ -126,6 +154,7 @@ run*.bat / run_silent.vbs Launchers
 requirements*.txt        CPU and optional NVIDIA dependencies
 assets/                  Brand assets
 docs/                    Architecture and screenshots
+packaging/               Self-contained app and installer build
 .github/                 CI, issue forms, and contribution templates
 ```
 
