@@ -1,7 +1,7 @@
 <div align="center">
   <img src="assets/freeflow-mark.svg" width="92" alt="FreeFlow logo">
   <h1>FreeFlow</h1>
-  <p><strong>Private, local-first voice dictation for Windows.</strong></p>
+  <p><strong>Private, on-device voice dictation for Windows.</strong></p>
   <p>Hold a shortcut, speak naturally, and release. FreeFlow transcribes, polishes, and pastes.</p>
 </div>
 

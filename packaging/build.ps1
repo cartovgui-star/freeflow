@@ -108,7 +108,7 @@ VSVersionInfo(
         '040904B0',
         [
           StringStruct('CompanyName', 'FreeFlow contributors'),
-          StringStruct('FileDescription', 'Private, local-first voice dictation'),
+          StringStruct('FileDescription', 'Private, on-device voice dictation'),
           StringStruct('FileVersion', '$Version'),
           StringStruct('InternalName', 'FreeFlow'),
           StringStruct('LegalCopyright', 'Copyright (c) 2026 FreeFlow contributors'),

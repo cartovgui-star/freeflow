@@ -12,7 +12,7 @@ $Launcher = Join-Path $ProjectDir "run_silent.vbs"
 
 Write-Host ""
 Write-Host "  FreeFlow setup" -ForegroundColor Magenta
-Write-Host "  Private, local-first dictation for Windows" -ForegroundColor DarkGray
+Write-Host "  Private, on-device dictation for Windows" -ForegroundColor DarkGray
 Write-Host ""
 
 if (-not (Test-Path -LiteralPath $VenvPython)) {
@@ -62,7 +62,7 @@ if (-not $NoDesktopShortcut) {
     $DesktopShortcut.TargetPath = "$env:WINDIR\System32\wscript.exe"
     $DesktopShortcut.Arguments = "`"$Launcher`""
     $DesktopShortcut.WorkingDirectory = $ProjectDir
-    $DesktopShortcut.Description = "Private, local-first dictation"
+    $DesktopShortcut.Description = "Private, on-device dictation"
     $DesktopShortcut.Save()
 }
 if ($StartWithWindows) {
