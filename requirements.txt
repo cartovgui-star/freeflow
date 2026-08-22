@@ -3,4 +3,4 @@ keyboard==0.13.5
 numpy==2.4.6
 pyperclip==1.11.0
 requests==2.34.2
-sounddevice==0.5.5
+sounddevice==0.5.6
